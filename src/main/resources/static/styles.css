@@ -26,6 +26,11 @@ td, tr {
     padding: 5px 20px;
 }
 
+thead {
+    position: sticky;
+    top: 0;
+}
+
 th {
     color: var(--white);
     background-color: var(--marianBlue);
@@ -59,6 +64,12 @@ tr:hover {
     width: 100%;
     justify-content: space-evenly;
     border-bottom: 3px solid var(--finn);
+}
+
+/* JOB RECORD*/
+.editImage:hover, .deleteImage:hover {
+    opacity: .2;
+    cursor: pointer;
 }
 
 /* == NAV BAR ==*/

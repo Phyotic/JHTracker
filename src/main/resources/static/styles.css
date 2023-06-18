@@ -1,0 +1,88 @@
+/* == CLASSES AND UNIVERSAL STYLES ==*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --honeydew: #E5F4E3;
+    --argentinianBlue: #5DA9E9;
+    --marianBlue: #003F91;
+    --white: #FFFFFF;
+    --finn: #6D326D;
+}
+
+body {
+    background-color: var(--argentinianBlue);
+}
+
+table {
+    padding: 10px 50px;
+    border-spacing: 0px;
+}
+
+td, tr {
+    padding: 5px 20px;
+}
+
+th {
+    color: var(--white);
+    background-color: var(--marianBlue);
+    padding: 5px 10px;
+}
+
+tr:nth-child(even) {
+    background-color: var(--honeydew);
+}
+
+tr:hover {
+    background-color: var(--white);
+}
+/* == TEMPLATES == */
+
+/* JOB RECORDS INTERFACE */
+.intButtons {
+    height: 100%;
+    width: 50%;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.intButtons:hover {
+    opacity: .8;
+    background-color: var(--honeydew);
+}
+
+#jobRecordsInt {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    border-bottom: 3px solid var(--finn);
+}
+
+/* == NAV BAR ==*/
+#selectorContainer {
+    padding: 1rem 0;
+    border-bottom: 3px solid var(--finn);
+}
+
+#dbSelect {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#dbSelect li {
+    padding: 1rem 2rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background-color: var(--marianBlue);
+}
+
+#dbSelect li:hover {
+    background-color: var(--honeydew);
+    opacity: .8;
+}

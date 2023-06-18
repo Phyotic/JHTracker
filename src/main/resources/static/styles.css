@@ -20,6 +20,7 @@ body {
 table {
     padding: 10px 50px;
     border-spacing: 0px;
+    width: 100%;
 }
 
 td, tr {
@@ -44,6 +45,7 @@ tr:nth-child(even) {
 tr:hover {
     background-color: var(--white);
 }
+
 /* == TEMPLATES == */
 
 /* JOB RECORDS INTERFACE */
@@ -63,7 +65,6 @@ tr:hover {
     display: flex;
     width: 100%;
     justify-content: space-evenly;
-    border-bottom: 3px solid var(--finn);
 }
 
 /* JOB RECORD*/
@@ -96,4 +97,14 @@ tr:hover {
 #dbSelect li:hover {
     background-color: var(--honeydew);
     opacity: .8;
+}
+
+/* == DB Display == */
+#dbInterface {
+    border-bottom: 3px solid var(--finn);
+}
+
+#dbDisplay {
+    overflow: auto;
+    width: 100%;
 }

@@ -50,10 +50,11 @@ tr:hover {
 
 /* JOB RECORDS INTERFACE */
 .intButtons {
-    height: 100%;
-    width: 50%;
+    width: clamp(10%, 100px, 150px);
+    height: clamp(10%, 100px, 150px);
     cursor: pointer;
     border-radius: 20px;
+    align-self: center;
 }
 
 .intButtons:hover {

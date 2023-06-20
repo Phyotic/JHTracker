@@ -13,6 +13,8 @@
     });
 })();
 
+getAllRecords("tableTest");
+
 /* == FUNCTIONS == */
 
 //Loads the interface and table header of the specified database.
@@ -34,7 +36,13 @@ function completeTemplate(template, replacementObject) {
     for(const [key, value] of Object.entries(replacementObject)) {
         temp = temp.replaceAll(key, value);
     }
-
     return temp;
 }
 
+//Retrieve all records from the specified db table.
+async function getAllRecords(tableName) {
+    const response = await fetch("/findAll/v1/" + tableName);
+    const data = await response.text();
+
+    console.log("Response: " + data);
+}

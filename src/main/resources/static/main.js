@@ -10,10 +10,16 @@
         };
 
         await dbUILoader("jobRecordsInt.html", intRepl, "jobRecordsTable.html");
+
+        const imgReplc = {
+            "{{editImageSource}}": "images/pen-to-square-solid.svg",
+            "{{deleteImageSource}}": "images/trash-solid.svg"
+        }
+
+        await displayAllRecords("Applications", "jobRecord.html", imgReplc);
     });
 })();
 
-getAllRecords("tableTest");
 
 /* == FUNCTIONS == */
 
@@ -39,11 +45,34 @@ function completeTemplate(template, replacementObject) {
     return temp;
 }
 
-//Retrieve all records from the specified db table.
-async function fetchAllApplications() {
-    const response = await fetch("/Applications");
+//Retrieve all records from the specified db table as text.
+async function fetchAllRecords(table) {
+    const response = await fetch("/" + table);
     const data = await response.text();
 
-    //TODO
-    console.log("Response: " + data);
+    return data;
+}
+
+//Displays all records from the specified db to the dbDisplay.
+async function displayAllRecords(tableName, recordTemplate, imgSrcs) {
+    const response = await fetch("templates/" + recordTemplate);
+    let template = await response.text();
+    
+    const tempWithImages = completeTemplate(template, imgSrcs);
+    const tableData = await fetchAllRecords(tableName);
+    const jTableData = JSON.parse(tableData);
+
+    const tbody = document.querySelector("tbody");
+
+    for(const recData of jTableData) {
+        let copyTemp = tempWithImages.slice();
+
+        const keys = Object.keys(recData);
+
+        for(const key of keys) {
+            copyTemp = copyTemp.replaceAll("{{" + key + "}}", recData[key]);
+        }
+
+        tbody.innerHTML += copyTemp;
+    }
 }

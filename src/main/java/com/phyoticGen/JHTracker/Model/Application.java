@@ -1,9 +1,14 @@
 package com.phyoticGen.JHTracker.Model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 public class Application {
@@ -11,39 +16,29 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String role;
+    private String title;
     private String link;
     private String status;
-    private String applyDate;
-    private String applyTime;
+
+    @Temporal(TemporalType.DATE)
+    private LocalDate applyDate;
+    @Temporal(TemporalType.TIME)
+    private LocalTime applyTime;
+    
     private int commute;
     private String city;
     private String state;
     private String company;
-    private String salary;
+    private double salary;
     private String notes;
     private String tech;
 
     public Application() {
-        
-    }
 
-    // public Application() {
-    //     this.role = "";
-    //     this.link = "";
-    //     this.status = "";
-    //     this.applyDate = "";
-    //     this.applyTime = "";
-    //     this.commute = 0;
-    //     this.city = "";
-    //     this.state = "";
-    //     this.salary = "";
-    //     this.notes = "";
-    //     this.tech = "";
-    // }
+    }
     
-    public Application(String role, String link, String status, String applyDate, String applyTime, int commute, String city, String state, String company, String salary, String notes, String tech) {
-        this.role = role;
+    public Application(String title, String link, String status, LocalDate applyDate, LocalTime applyTime, int commute, String city, String state, String company, double salary, String notes, String tech) {
+        this.title = title;
         this.link = link;
         this.status = status;
         this.applyDate = applyDate;
@@ -65,12 +60,12 @@ public class Application {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
+    public String getTitle() {
+        return title;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getLink() {
@@ -89,19 +84,19 @@ public class Application {
         this.status = status;
     }
 
-    public String getApplyDate() {
+    public LocalDate getApplyDate() {
         return applyDate;
     }
 
-    public void setApplyDate(String applyDate) {
+    public void setApplyDate(LocalDate applyDate) {
         this.applyDate = applyDate;
     }
 
-    public String getApplyTime() {
+    public LocalTime getApplyTime() {
         return applyTime;
     }
 
-    public void setApplyTime(String applyTime) {
+    public void setApplyTime(LocalTime applyTime) {
         this.applyTime = applyTime;
     }
 
@@ -137,11 +132,11 @@ public class Application {
         this.company = company;
     }
 
-    public String getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 
@@ -163,7 +158,7 @@ public class Application {
 
     @Override
     public String toString() {
-        return "Application [id=" + id + ", role=" + role + ", link=" + link + ", status=" + status + ", applyDate="
+        return "Application [id=" + id + ", title=" + title + ", link=" + link + ", status=" + status + ", applyDate="
                 + applyDate + ", applyTime=" + applyTime + ", commute=" + commute + ", city=" + city + ", state="
                 + state + ", company=" + company + ", salary=" + salary + ", notes=" + notes + ", tech="
                 + tech + "]";

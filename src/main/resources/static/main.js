@@ -40,9 +40,10 @@ function completeTemplate(template, replacementObject) {
 }
 
 //Retrieve all records from the specified db table.
-async function getAllRecords(tableName) {
-    const response = await fetch("/findAll/v1/" + tableName);
+async function fetchAllApplications() {
+    const response = await fetch("/Applications");
     const data = await response.text();
 
+    //TODO
     console.log("Response: " + data);
 }

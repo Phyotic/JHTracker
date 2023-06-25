@@ -8,6 +8,52 @@
     <title>JHTracker</title>
 </head>
 <body>
+    <section id="addApplicationContainer" class="notDisplayed">
+        <div id="blackout"></div>
+        <div id="contentContainer">
+            <div id="addContent">
+                <h1>Add New Application</h1>
+                <form id="addForm">
+                    <div>
+                        <label for="inLink">Link </label><br>
+                        <input id="inLink" class="addInput" type="url" name="link" placeholder="www.google.com"><br>
+                        <label for="inDate">Apply by </label><br>
+                        <input id="inDate" class="addInput" type="date" name="applyDate"><br>
+                        <label for="inTime" for="inTime">Apply by </label><br>
+                        <input id="inTime" type="time" class="addInput" name="applyTime"><br>
+                        <label for="inCompany">Company </label><br>
+                        <input id="inCompany" class="addInput" type="text" name="company" placeholder="Google"><br>
+                        <label for="inTech">Tech </label><br>
+                        <input id="inTech" class="addInput" type="text" name="tech" placeholder="CSVs"><br>
+                        <label for="inNotes">Notes </label><br>
+                        <input id="inNotes" class="addInput" type="text" name="notes" placeholder="Free Stuff"><br>
+                    </div>
+        
+                    <div>
+                        <label for="inRole">Title </label><br>
+                        <input id="inRole" class="addInput" type="text" name="title" placeholder="Position"><br>
+                        <label for="inCommute">Commute </label><br>
+                        <input id="inCommute" class="addInput" type="number" name="commute" placeholder="in minutes"><br>
+                        <label for="inStatus">Status </label><br>
+                        <input id="inStatus" class="addInput" type="text" name="status" value="Not Applied"><br>
+                        <label for="inSalary">Salary </label><br>
+                        <input id="inSalary" class="addInput" type="number" name="salary" placeholder="50000"><br>
+                        <label for="inCity">City </label><br>
+                        <input id="inCity" class="addInput" type="text" name="city" value="Chicago"><br>
+                        <label for="inState">State </label><br>
+                        <input id="inState" class="addInput" type="text" name="state" value="Illinois"><br>
+                    </div>
+                </form>
+
+                <div id="actionButtons">
+                    <img id="appAccept" src="images/circle-check-solid.svg" width="50px" height="50px">
+                    <img id="appClose" src="images/xmark-solid.svg" width="55px" height="50px">
+                </div>
+            </div>
+        </div>
+
+    </section>
+
     <nav id="selectorContainer">
         <ul id="dbSelect">
             <li id="jobRecordsButton">JobRecords</li>

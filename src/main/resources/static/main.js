@@ -1,25 +1,44 @@
-//Add handlers to the DB buttons.
-(async ()=> {
-    const jrButton = document.getElementById("jobRecordsButton");
+//Add handler to the job records button.
+const jrButton = document.getElementById("jobRecordsButton");
 
-    jrButton.addEventListener("click", async (event) => {
+jrButton.addEventListener("click", async (event) => {
+    const curInt = document.getElementById("dbInterface").firstElementChild;
+    console.log(curInt);
+    if(!curInt || curInt.id != "jobRecordsInt") {
+        //Load interface for applications db
         const intRepl = {
             "{{addImage}}": "images/plus-solid.svg",
             "{{searchImage}}": "images/magnifying-glass-solid.svg",
             "{{allImage}}": "images/table-list-solid.svg"
         };
-
         await dbUILoader("jobRecordsInt.html", intRepl, "jobRecordsTable.html");
 
+        //Add display toggability to the add application card.
+        const addBtn = document.getElementById("addApplication");
+        addBtn.addEventListener("click", (event) => {
+            toggleAddApplication(event);
+        });
+
+        //Add accept and close functionality to application buttons.
+        const addAccept = document.getElementById("appAccept");
+        addAccept.addEventListener("click", () => {
+            //TODO: Send form
+            toggleAddApplication();
+        });
+
+        const closeAccept = document.getElementById("appClose");
+        closeAccept.addEventListener("click", () => {
+            toggleAddApplication();
+        });
+
+        //Display all records in Job Record DB.
         const imgReplc = {
             "{{editImageSource}}": "images/pen-to-square-solid.svg",
             "{{deleteImageSource}}": "images/trash-solid.svg"
         }
-
         await displayAllRecords("Applications", "jobRecord.html", imgReplc);
-    });
-})();
-
+    }
+});
 
 /* == FUNCTIONS == */
 
@@ -75,4 +94,11 @@ async function displayAllRecords(tableName, recordTemplate, imgSrcs) {
 
         tbody.innerHTML += copyTemp;
     }
+}
+
+//Toggles the display of the element.
+function toggleAddApplication(event) {
+    const app = document.getElementById("addApplicationContainer");
+    
+    app.classList.toggle("notDisplayed");
 }

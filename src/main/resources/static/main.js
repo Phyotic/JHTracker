@@ -3,7 +3,7 @@ const jrButton = document.getElementById("jobRecordsButton");
 
 jrButton.addEventListener("click", async (event) => {
     const curInt = document.getElementById("dbInterface").firstElementChild;
-    console.log(curInt);
+
     if(!curInt || curInt.id != "jobRecordsInt") {
         //Load interface for applications db
         const intRepl = {
@@ -13,6 +13,44 @@ jrButton.addEventListener("click", async (event) => {
         };
         await dbUILoader("jobRecordsInt.html", intRepl, "jobRecordsTable.html");
 
+        //Add addApplication section.
+        const addAppResp = await fetch("addApplication.html");
+        const addAppSection = await addAppResp.text();
+        document.getElementById("overlays").innerHTML = addAppSection;
+
+        //Add handle submit to application addition.
+        const form = document.getElementById("addForm");
+        form.addEventListener("submit", async(event) => {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+
+            let jsonData = {}
+            for(const [key, value] of formData.entries()) {
+                jsonData[key] = value;
+            }
+
+            jsonData = JSON.stringify(jsonData);
+
+            try {
+                await fetch("/Applications", {
+                    method: "POST",
+                    body: jsonData,
+                    headers: {"Content-Type": "application/json"}
+                });
+
+                //Display all records in Job Record DB.
+                const imgReplc = {
+                    "{{editImageSource}}": "images/pen-to-square-solid.svg",
+                    "{{deleteImageSource}}": "images/trash-solid.svg"
+                }
+                await displayAllRecords("Applications", "jobRecord.html", imgReplc);
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+
         //Add display toggability to the add application card.
         const addBtn = document.getElementById("addApplication");
         addBtn.addEventListener("click", (event) => {
@@ -21,8 +59,8 @@ jrButton.addEventListener("click", async (event) => {
 
         //Add accept and close functionality to application buttons.
         const addAccept = document.getElementById("appAccept");
+        
         addAccept.addEventListener("click", () => {
-            //TODO: Send form
             toggleAddApplication();
         });
 
@@ -82,6 +120,7 @@ async function displayAllRecords(tableName, recordTemplate, imgSrcs) {
     const jTableData = JSON.parse(tableData);
 
     const tbody = document.querySelector("tbody");
+    tbody.replaceChildren();
 
     for(const recData of jTableData) {
         let copyTemp = tempWithImages.slice();

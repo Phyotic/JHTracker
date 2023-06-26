@@ -174,7 +174,7 @@ tr:hover {
     outline-color: var(--marianBlue);
 }
 
-#actionButtons img:hover {
+#appAccept:hover, #appClose:hover {
     opacity: .8;
     background-color: var(--marianBlue);
     border-radius: 50%;

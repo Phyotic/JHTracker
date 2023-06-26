@@ -69,12 +69,7 @@ jrButton.addEventListener("click", async (event) => {
             toggleAddApplication();
         });
 
-        //Display all records in Job Record DB.
-        const imgReplc = {
-            "{{editImageSource}}": "images/pen-to-square-solid.svg",
-            "{{deleteImageSource}}": "images/trash-solid.svg"
-        }
-        await displayAllRecords("Applications", "jobRecord.html", imgReplc);
+        displayApplicationRecords();
     }
 });
 
@@ -133,6 +128,15 @@ async function displayAllRecords(tableName, recordTemplate, imgSrcs) {
 
         tbody.innerHTML += copyTemp;
     }
+
+    //Add handlers for deletion.
+    const rows = document.querySelector("tbody").children;
+
+    for(const row of rows) {
+        row.addEventListener("click", async (event)=> {
+            deleteRecord(event);
+        })
+    }
 }
 
 //Toggles the display of the element.
@@ -140,4 +144,37 @@ function toggleAddApplication(event) {
     const app = document.getElementById("addApplicationContainer");
     
     app.classList.toggle("notDisplayed");
+}
+
+//Deletes a record.
+async function deleteRecord(event) {
+    if(event.target.classList.contains("deleteImage")) {
+        const tr = event.target.parentElement.parentElement;
+
+        let id;
+        for(const td of tr.children) {
+            console.log(td);
+            if(td.classList.contains("recName")) {
+                id = td.textContent;
+                console.log(td.textContent)
+                break;
+            }
+        }
+
+        //Send delete request.
+        await fetch("/Applications/" + id, {
+            method: "DELETE"
+        })
+
+        displayApplicationRecords();
+    }
+}
+
+//Displays all applications from the applications db.
+async function displayApplicationRecords() {
+    const imgReplc = {
+        "{{editImageSource}}": "images/pen-to-square-solid.svg",
+        "{{deleteImageSource}}": "images/trash-solid.svg"
+    }
+    await displayAllRecords("Applications", "jobRecord.html", imgReplc);
 }

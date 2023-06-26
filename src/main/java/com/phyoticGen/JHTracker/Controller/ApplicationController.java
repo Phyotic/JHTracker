@@ -48,8 +48,7 @@ public class ApplicationController {
     public void deleteApplication(@PathVariable Long id) {
         applicationService.deleteApplication(id);
     }
-    
-    //TODO
+
     @PutMapping("/Applications/{id}")
     public ResponseEntity<Application> updateApp(@PathVariable Long id, @RequestBody Application app) {
         return ResponseEntity.ok(applicationService.updateApplication(id, app));

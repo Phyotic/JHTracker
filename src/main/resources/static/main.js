@@ -44,9 +44,6 @@ jrButton.addEventListener("click", async () => {
 
         //Add accept functionality to accept image.
         let addAccept = document.getElementById("appAccept");
-        // addAccept.replaceWith(addAccept.cloneNode(true));
-
-        // addAccept = document.getElementById("appAccept");
 
         addAccept.addEventListener("click", () => {
             toggleViewApplication();

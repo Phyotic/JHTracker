@@ -116,7 +116,7 @@ tr:hover {
 }
 
 /* == Add Application == */
-#addApplicationContainer {
+#applicationViewContainer {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -138,7 +138,7 @@ tr:hover {
     z-index: 2;
 }
 
-#addContent {
+#viewContent {
     background-color: var(--white);
     border-radius: 20px;
     padding: 50px;
@@ -149,19 +149,19 @@ tr:hover {
     gap: 30px;
 }
 
-#addContent h1 {
+#viewContent h1 {
     font-weight: 700;
     font-size: 2rem;
     letter-spacing: 0.1rem;
 }
 
-#addForm {
+#viewForm {
     display: flex;
     flex-direction: row;
     gap: 40px;
 }
 
-.addInput {
+.viewInput {
     margin-bottom: 1rem;
     margin-top: .2rem;
     border-radius: 5px;
@@ -169,7 +169,7 @@ tr:hover {
     background-color: var(--honeydew);
 }
 
-.addInput:focus {
+.viewInput:focus {
     background-color: var(--argentinianBlue);
     outline-color: var(--marianBlue);
 }

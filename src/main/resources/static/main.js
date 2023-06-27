@@ -14,10 +14,23 @@ jrButton.addEventListener("click", async () => {
         };
         await dbUILoader("jobRecordsInt.html", intRepl, "jobRecordsTable.html");
 
+        //Display all applications.
+        const displayAll = document.getElementById("displayAllApplications");
+        displayAll.addEventListener("click", () => {
+            displayApplicationRecords();
+        });
+
         //Add viewApplication section.
         const viewAppResp = await fetch("templates/" + "applicationView.html");
         const viewAppSection = await viewAppResp.text();
         document.getElementById("overlays").innerHTML = viewAppSection;
+
+        //Add reset functionality to reset button.
+        const resetButton = document.getElementById("appReset");
+        resetButton.addEventListener("click", () => {
+            const form = document.getElementById("viewForm");
+            form.reset();
+        })
 
         //Add display toggability and submit handler to the add application card in interface.
         const addBtn = document.getElementById("addApplication");

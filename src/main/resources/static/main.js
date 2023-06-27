@@ -19,6 +19,13 @@ jrButton.addEventListener("click", async () => {
         const viewAppSection = await viewAppResp.text();
         document.getElementById("overlays").innerHTML = viewAppSection;
 
+        //Add reset functionality to reset button.
+        const resetButton = document.getElementById("appReset");
+        resetButton.addEventListener("click", () => {
+            const form = document.getElementById("viewForm");
+            form.reset();
+        })
+
         //Add display toggability and submit handler to the add application card in interface.
         const addBtn = document.getElementById("addApplication");
         addBtn.addEventListener("click", (event) => {

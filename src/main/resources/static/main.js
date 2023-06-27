@@ -1,9 +1,10 @@
 //Add handler to the job records button.
 const jrButton = document.getElementById("jobRecordsButton");
 
-jrButton.addEventListener("click", async (event) => {
+jrButton.addEventListener("click", async () => {
     const curInt = document.getElementById("dbInterface").firstElementChild;
 
+    //If no interface or a different interface displayed...
     if(!curInt || curInt.id != "jobRecordsInt") {
         //Load interface for applications db
         const intRepl = {
@@ -13,60 +14,35 @@ jrButton.addEventListener("click", async (event) => {
         };
         await dbUILoader("jobRecordsInt.html", intRepl, "jobRecordsTable.html");
 
-        //Add addApplication section.
-        const addAppResp = await fetch("addApplication.html");
-        const addAppSection = await addAppResp.text();
-        document.getElementById("overlays").innerHTML = addAppSection;
+        //Add viewApplication section.
+        const viewAppResp = await fetch("templates/" + "applicationView.html");
+        const viewAppSection = await viewAppResp.text();
+        document.getElementById("overlays").innerHTML = viewAppSection;
 
-        //Add handle submit to application addition.
-        const form = document.getElementById("addForm");
-        form.addEventListener("submit", async(event) => {
-            event.preventDefault();
-            
-            const formData = new FormData(form);
-
-            let jsonData = {}
-            for(const [key, value] of formData.entries()) {
-                jsonData[key] = value;
-            }
-
-            jsonData = JSON.stringify(jsonData);
-
-            try {
-                await fetch("/Applications", {
-                    method: "POST",
-                    body: jsonData,
-                    headers: {"Content-Type": "application/json"}
-                });
-
-                //Display all records in Job Record DB.
-                const imgReplc = {
-                    "{{editImageSource}}": "images/pen-to-square-solid.svg",
-                    "{{deleteImageSource}}": "images/trash-solid.svg"
-                }
-                await displayAllRecords("Applications", "jobRecord.html", imgReplc);
-            } catch (error) {
-                console.error(error);
-            }
-        });
-
-
-        //Add display toggability to the add application card.
+        //Add display toggability and submit handler to the add application card in interface.
         const addBtn = document.getElementById("addApplication");
         addBtn.addEventListener("click", (event) => {
-            toggleAddApplication(event);
+            const header = document.getElementById("viewApplicationHeader");
+            header.textContent = "Add New Application";
+
+            addHandlerAppAdd();
+            toggleViewApplication(event);
         });
 
-        //Add accept and close functionality to application buttons.
-        const addAccept = document.getElementById("appAccept");
-        
+        //Add accept functionality to accept image.
+        let addAccept = document.getElementById("appAccept");
+        // addAccept.replaceWith(addAccept.cloneNode(true));
+
+        // addAccept = document.getElementById("appAccept");
+
         addAccept.addEventListener("click", () => {
-            toggleAddApplication();
+            toggleViewApplication();
         });
 
+        //Add close functionality to close image.
         const closeAccept = document.getElementById("appClose");
         closeAccept.addEventListener("click", () => {
-            toggleAddApplication();
+            toggleViewApplication();
         });
 
         displayApplicationRecords();
@@ -128,20 +104,11 @@ async function displayAllRecords(tableName, recordTemplate, imgSrcs) {
 
         tbody.innerHTML += copyTemp;
     }
-
-    //Add handlers for deletion.
-    const rows = document.querySelector("tbody").children;
-
-    for(const row of rows) {
-        row.addEventListener("click", async (event)=> {
-            deleteRecord(event);
-        })
-    }
 }
 
 //Toggles the display of the element.
-function toggleAddApplication(event) {
-    const app = document.getElementById("addApplicationContainer");
+function toggleViewApplication(event) {
+    const app = document.getElementById("applicationViewContainer");
     
     app.classList.toggle("notDisplayed");
 }
@@ -153,10 +120,8 @@ async function deleteRecord(event) {
 
         let id;
         for(const td of tr.children) {
-            console.log(td);
-            if(td.classList.contains("recName")) {
-                id = td.textContent;
-                console.log(td.textContent)
+            if(td.classList.contains("recId")) {
+                id = td.getAttribute("value");
                 break;
             }
         }
@@ -177,4 +142,143 @@ async function displayApplicationRecords() {
         "{{deleteImageSource}}": "images/trash-solid.svg"
     }
     await displayAllRecords("Applications", "jobRecord.html", imgReplc);
+    addHandlersAppEditUpdate();
+}
+
+//Displays the application view with update functionality.
+async function editAppRecord(event) {
+    if(event.target.classList.contains("editImage")) {
+        //Update viewApplication with the data of the row to be edited. Then show viewApp.
+        document.getElementById("viewApplicationHeader").textContent = "Update Application";
+        
+        const tr = event.target.parentElement.parentElement.children;
+
+        //Retrieve data of row to form.
+        let id;
+        for(const td of tr) {
+            const eName = td.getAttribute("name");
+
+            switch(eName) {
+                case "id":
+                    id = td.getAttribute("value");
+                    break;
+                case "role":
+                    document.getElementById("inRole").value = td.getAttribute("value");
+                    break;
+                case "link":
+                    document.getElementById("inLink").value = td.getAttribute("value");
+                    break;
+                case "status":
+                    document.getElementById("inStatus").value = td.getAttribute("value");
+                    break;
+                case "apply_date":
+                    document.getElementById("inDate").value = td.getAttribute("value");
+                    break;
+                case "apply_time":
+                    document.getElementById("inTime").value = td.getAttribute("value");
+                    break;
+                case "city":
+                    document.getElementById("inCity").value = td.getAttribute("value");
+                    break;
+                case "state":
+                    document.getElementById("inState").value = td.getAttribute("value");
+                    break;
+                case "commute":
+                    document.getElementById("inCommute").value = td.getAttribute("value");
+                    break;
+                case "company":
+                    document.getElementById("inCompany").value = td.getAttribute("value");
+                    break;
+                case "salary":
+                    document.getElementById("inSalary").value = td.getAttribute("value");
+                    break;
+                case "notes":
+                    document.getElementById("inNotes").value = td.getAttribute("value");
+                    break;
+                case "techList":
+                    document.getElementById("inTech").value = td.getAttribute("value");
+                    break;
+                default:
+            } 
+        }
+
+        toggleViewApplication();
+
+        //Add handler to submit of record update. Remove all event listeners from form.
+        let form = document.getElementById("viewForm");
+        form.replaceWith(form.cloneNode(true));
+        form = document.getElementById("viewForm");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const form = document.getElementById("viewForm");
+            const formData = new FormData(form);
+
+            let jsonData = {}
+            for(const [key, value] of formData.entries()) {
+                jsonData[key] = value;
+            }
+
+            jsonData = JSON.stringify(jsonData);
+
+            await fetch("/Applications/" + id, {
+                method: "PUT",
+                body: jsonData,
+                headers: {"Content-Type": "application/json"}
+            });
+
+            form.reset();
+            displayApplicationRecords();
+        });
+    }
+}
+
+//Add update and edit handlers to the application row.
+function addHandlersAppEditUpdate() {
+    // Add handlers for deletion and update.
+    const rows = document.querySelector("tbody").children;
+
+    for(const row of rows) {
+        row.addEventListener("click", async (event)=> {
+            deleteRecord(event);
+        });
+
+        row.addEventListener("click", async (event) => {
+            editAppRecord(event);
+        });
+    }
+}
+
+//Add a handler to add a new application.
+function addHandlerAppAdd() {
+    let form = document.getElementById("viewForm");
+    form.replaceWith(form.cloneNode(true));
+    form = document.getElementById("viewForm");
+
+    form.addEventListener("submit", async(event) => {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+
+        let jsonData = {}
+        for(const [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+
+        jsonData = JSON.stringify(jsonData);
+
+        try {
+            await fetch("/Applications", {
+                method: "POST",
+                body: jsonData,
+                headers: {"Content-Type": "application/json"}
+            });
+
+            //Display all records in Job Record DB.
+            displayApplicationRecords();
+        } catch (error) {
+            console.error(error);
+        }
+    });
 }

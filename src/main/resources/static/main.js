@@ -14,6 +14,12 @@ jrButton.addEventListener("click", async () => {
         };
         await dbUILoader("jobRecordsInt.html", intRepl, "jobRecordsTable.html");
 
+        //Display all applications.
+        const displayAll = document.getElementById("displayAllApplications");
+        displayAll.addEventListener("click", () => {
+            displayApplicationRecords();
+        });
+
         //Add viewApplication section.
         const viewAppResp = await fetch("templates/" + "applicationView.html");
         const viewAppSection = await viewAppResp.text();

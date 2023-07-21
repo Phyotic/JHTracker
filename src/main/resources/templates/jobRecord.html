@@ -1,16 +1,30 @@
 <tr>
-    <td class="recId" name="id" value="{{id}}">{{id}}</td>
     <td class="recRole" name="role" value="{{title}}">{{title}}</td>
-    <td class="recLink" name="link" value="{{link}}">{{link}}</td>
+    <td class="recLink" name="link" value="{{link}}">
+        <a class="linkImage" href="{{link}}" target="_blank">
+            <img src="{{linkImageSource}}" alt="Application Link" width="40" />
+        </a>
+    </td>
     <td class="recStatus" name="status" value="{{status}}">{{status}}</td>
     <td class="recApplyDate" name="apply_date" value="{{applyDate}}">{{applyDate}}</td>
-    <td class="recApplyTime" name="apply_time" value="{{applyTime}}">{{applyTime}}</td>
-    <td class="recCity" name="city" value="{{city}}">{{city}}</td>
-    <td class="recState" name="state" value="{{state}}">{{state}}</td>
-    <td class="recCommute" name="commute" value="{{commute}}">{{commute}}</td>
-    <td class="recCompany" name="company"  value="{{company}}">{{company}}</td>
-    <td class="recSalary" name="salary" value="{{salary}}">{{salary}}</td>
-    <td class="recNotes" name="notes"  value="{{notes}}">{{notes}}</td>
+    <td class="recLocation" name="location" value="{{city}}, {{state}}">
+        {{city}}, {{state}}
+    </td>
+    <td class="recCompany" name="company" value="{{company}}">{{company}}</td>
+    <td class="recNotes" name="notes" value="{{notes}}">{{notes}}</td>
     <td class="recTechList" name="techList" value="{{tech}}">{{tech}}</td>
-    <td><img class="editImage" src="{{editImageSource}}" width="40"> <img class="deleteImage" src="{{deleteImageSource}}" width="40"></td>
+    <td>
+        <img class="editImage" src="{{editImageSource}}" width="40" />
+        <img class="deleteImage" src="{{deleteImageSource}}" width="40" />
+    </td>
+
+    <!-- Not Displayed -->
+    <td class="recApplyTime notDisplayed" name="apply_time" value="{{applyTime}}">
+        {{applyTime}}
+    </td>
+    <td class="recId notDisplayed" name="id" value="{{id}}">{{id}}</td>
+    <td class="recCommute notDisplayed" name="commute" value="{{commute}}">
+        {{commute}}
+    </td>
+    <td class="recSalary notDisplayed" name="salary" value="{{salary}}">{{salary}}</td>
 </tr>

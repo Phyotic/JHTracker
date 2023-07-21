@@ -5,12 +5,12 @@ jrButton.addEventListener("click", async () => {
     const curInt = document.getElementById("dbInterface").firstElementChild;
 
     //If no interface or a different interface displayed...
-    if(!curInt || curInt.id != "jobRecordsInt") {
+    if (!curInt || curInt.id != "jobRecordsInt") {
         //Load interface for applications db
         const intRepl = {
             "{{addImage}}": "images/plus-solid.svg",
             "{{searchImage}}": "images/magnifying-glass-solid.svg",
-            "{{allImage}}": "images/table-list-solid.svg"
+            "{{allImage}}": "images/table-list-solid.svg",
         };
         await dbUILoader("jobRecordsInt.html", intRepl, "jobRecordsTable.html");
 
@@ -30,7 +30,7 @@ jrButton.addEventListener("click", async () => {
         resetButton.addEventListener("click", () => {
             const form = document.getElementById("viewForm");
             form.reset();
-        })
+        });
 
         //Add display toggability and submit handler to the add application card in interface.
         const addBtn = document.getElementById("addApplication");
@@ -77,7 +77,7 @@ async function dbUILoader(interfaceFile, intReplObj, tableFile) {
 //Replace the keys with the values in the template.
 function completeTemplate(template, replacementObject) {
     let temp = template;
-    for(const [key, value] of Object.entries(replacementObject)) {
+    for (const [key, value] of Object.entries(replacementObject)) {
         temp = temp.replaceAll(key, value);
     }
     return temp;
@@ -95,7 +95,7 @@ async function fetchAllRecords(table) {
 async function displayAllRecords(tableName, recordTemplate, imgSrcs) {
     const response = await fetch("templates/" + recordTemplate);
     let template = await response.text();
-    
+
     const tempWithImages = completeTemplate(template, imgSrcs);
     const tableData = await fetchAllRecords(tableName);
     const jTableData = JSON.parse(tableData);
@@ -103,12 +103,12 @@ async function displayAllRecords(tableName, recordTemplate, imgSrcs) {
     const tbody = document.querySelector("tbody");
     tbody.replaceChildren();
 
-    for(const recData of jTableData) {
+    for (const recData of jTableData) {
         let copyTemp = tempWithImages.slice();
 
         const keys = Object.keys(recData);
 
-        for(const key of keys) {
+        for (const key of keys) {
             copyTemp = copyTemp.replaceAll("{{" + key + "}}", recData[key]);
         }
 
@@ -119,18 +119,18 @@ async function displayAllRecords(tableName, recordTemplate, imgSrcs) {
 //Toggles the display of the element.
 function toggleViewApplication(event) {
     const app = document.getElementById("applicationViewContainer");
-    
+
     app.classList.toggle("notDisplayed");
 }
 
 //Deletes a record.
 async function deleteRecord(event) {
-    if(event.target.classList.contains("deleteImage")) {
+    if (event.target.classList.contains("deleteImage")) {
         const tr = event.target.parentElement.parentElement;
 
         let id;
-        for(const td of tr.children) {
-            if(td.classList.contains("recId")) {
+        for (const td of tr.children) {
+            if (td.classList.contains("recId")) {
                 id = td.getAttribute("value");
                 break;
             }
@@ -138,8 +138,8 @@ async function deleteRecord(event) {
 
         //Send delete request.
         await fetch("/Applications/" + id, {
-            method: "DELETE"
-        })
+            method: "DELETE",
+        });
 
         displayApplicationRecords();
     }
@@ -149,26 +149,28 @@ async function deleteRecord(event) {
 async function displayApplicationRecords() {
     const imgReplc = {
         "{{editImageSource}}": "images/pen-to-square-solid.svg",
-        "{{deleteImageSource}}": "images/trash-solid.svg"
-    }
+        "{{deleteImageSource}}": "images/trash-solid.svg",
+        "{{linkImageSource}}": "images/arrow-up-right-from-square-solid.svg",
+    };
     await displayAllRecords("Applications", "jobRecord.html", imgReplc);
     addHandlersAppEditUpdate();
 }
 
 //Displays the application view with update functionality.
 async function editAppRecord(event) {
-    if(event.target.classList.contains("editImage")) {
+    if (event.target.classList.contains("editImage")) {
         //Update viewApplication with the data of the row to be edited. Then show viewApp.
-        document.getElementById("viewApplicationHeader").textContent = "Update Application";
-        
+        document.getElementById("viewApplicationHeader").textContent =
+            "Update Application";
+
         const tr = event.target.parentElement.parentElement.children;
 
         //Retrieve data of row to form.
         let id;
-        for(const td of tr) {
+        for (const td of tr) {
             const eName = td.getAttribute("name");
 
-            switch(eName) {
+            switch (eName) {
                 case "id":
                     id = td.getAttribute("value");
                     break;
@@ -209,7 +211,7 @@ async function editAppRecord(event) {
                     document.getElementById("inTech").value = td.getAttribute("value");
                     break;
                 default:
-            } 
+            }
         }
 
         toggleViewApplication();
@@ -225,8 +227,8 @@ async function editAppRecord(event) {
             const form = document.getElementById("viewForm");
             const formData = new FormData(form);
 
-            let jsonData = {}
-            for(const [key, value] of formData.entries()) {
+            let jsonData = {};
+            for (const [key, value] of formData.entries()) {
                 jsonData[key] = value;
             }
 
@@ -235,7 +237,7 @@ async function editAppRecord(event) {
             await fetch("/Applications/" + id, {
                 method: "PUT",
                 body: jsonData,
-                headers: {"Content-Type": "application/json"}
+                headers: { "Content-Type": "application/json" },
             });
 
             form.reset();
@@ -249,8 +251,8 @@ function addHandlersAppEditUpdate() {
     // Add handlers for deletion and update.
     const rows = document.querySelector("tbody").children;
 
-    for(const row of rows) {
-        row.addEventListener("click", async (event)=> {
+    for (const row of rows) {
+        row.addEventListener("click", async (event) => {
             deleteRecord(event);
         });
 
@@ -266,13 +268,13 @@ function addHandlerAppAdd() {
     form.replaceWith(form.cloneNode(true));
     form = document.getElementById("viewForm");
 
-    form.addEventListener("submit", async(event) => {
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        
+
         const formData = new FormData(form);
 
-        let jsonData = {}
-        for(const [key, value] of formData.entries()) {
+        let jsonData = {};
+        for (const [key, value] of formData.entries()) {
             jsonData[key] = value;
         }
 
@@ -282,7 +284,7 @@ function addHandlerAppAdd() {
             await fetch("/Applications", {
                 method: "POST",
                 body: jsonData,
-                headers: {"Content-Type": "application/json"}
+                headers: { "Content-Type": "application/json" },
             });
 
             //Display all records in Job Record DB.
